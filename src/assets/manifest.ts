@@ -41,11 +41,11 @@ import dropSheet from './effects/drop-sheet.png'
 import dirtSheet from './effects/dirt-sheet.png'
 import sparkleSheet from './effects/sparkle-sheet.png'
 import coinSheet from './effects/coin-sheet.png'
-import smokeSheet from './effects/smoke-sheet.png'
-import butterflySheet from './effects/butterfly-sheet.png'
+import smokeSheet from './effects/smoke-generated-sheet.png'
+import butterflySheet from './effects/butterfly-generated-sheet.png'
 import plantSheet from './effects/plant-sheet.png'
 import harvestSheet from './effects/harvest-sheet.png'
-import bedSoilSheet from './world/bed-soil-sheet.png'
+import bedSoilSheet from './world/bed-soil-generated-sheet.png'
 import stumpSheet from './world/decor-stump-sheet.png'
 import flowerBedSheet from './world/building-flower-bed-sheet.png'
 import birdhouseSheet from './world/building-birdhouse-sheet.png'
@@ -59,7 +59,7 @@ export interface SpriteSheet {
   readonly loop: boolean
 }
 
-const cropSheet = (src: string): SpriteSheet => ({ src, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 720, loop: true })
+const cropSheet = (src: string): SpriteSheet => ({ src, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 1_120, loop: true })
 
 export const CROP_SHEETS: Record<CropId, readonly [SpriteSheet, SpriteSheet, SpriteSheet, SpriteSheet, SpriteSheet]> = {
   carrot: [cropSheet(carrot0), cropSheet(carrot1), cropSheet(carrot2), cropSheet(carrot3), cropSheet(carrot4)],
@@ -72,7 +72,7 @@ export const CROP_SHEETS: Record<CropId, readonly [SpriteSheet, SpriteSheet, Spr
 }
 
 export const WORLD_SHEETS = {
-  bedSoil: { src: bedSoilSheet, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 960, loop: true },
+  bedSoil: { src: bedSoilSheet, frameWidth: 128, frameHeight: 128, frames: 4, durationMs: 1_400, loop: true },
   stump: { src: stumpSheet, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 960, loop: true },
   flowerBed: { src: flowerBedSheet, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 840, loop: true },
   birdhouse: { src: birdhouseSheet, frameWidth: 64, frameHeight: 64, frames: 4, durationMs: 840, loop: true },
@@ -84,8 +84,8 @@ export const EFFECT_SHEETS = {
   dirt: { src: dirtSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 540, loop: false },
   sparkle: { src: sparkleSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 540, loop: true },
   coin: { src: coinSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 600, loop: false },
-  smoke: { src: smokeSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 1200, loop: true },
-  butterfly: { src: butterflySheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 900, loop: true },
+  smoke: { src: smokeSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 1_800, loop: true },
+  butterfly: { src: butterflySheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 720, loop: true },
   plant: { src: plantSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 640, loop: false },
   harvest: { src: harvestSheet, frameWidth: 64, frameHeight: 64, frames: 6, durationMs: 560, loop: false },
 } as const satisfies Record<string, SpriteSheet>

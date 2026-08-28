@@ -1,5 +1,7 @@
+import { WORLD_SHEETS } from '../assets/manifest'
 import { BOARD_COLUMNS, BOARD_ROWS, BED_FOOTPRINT, isBedPositionValid } from '../data/farmLayout'
 import type { BoardPosition, FarmBedState } from '../types/game'
+import { AnimatedSprite } from './AnimatedSprite'
 
 interface BuildPlacementLayerProps {
   readonly active: boolean
@@ -67,7 +69,9 @@ export function BuildPlacementLayer({
             gridColumn: `${previewPosition.column + 1} / span ${BED_FOOTPRINT}`,
             gridRow: `${previewPosition.row + 1} / span ${BED_FOOTPRINT}`,
           }}
-        />
+        >
+          <AnimatedSprite className="bed-preview__sprite" playing={false} sheet={WORLD_SHEETS.bedSoil} />
+        </div>
       )}
     </div>
   )

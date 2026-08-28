@@ -57,6 +57,9 @@ describe('game store tile transitions', () => {
     expect(store.getState().inventory.crops.carrot).toBe(1)
     expect(store.getState().tiles['bed-1-0'].status).toBe('harvested')
 
+    store.getState().syncTime(62_003)
+    expect(store.getState().tiles['bed-1-0'].status).toBe('harvested')
+
     store.getState().finishHarvestAnimation('bed-1-0')
     expect(store.getState().tiles['bed-1-0']).toEqual(expect.objectContaining({ status: 'prepared', cropId: undefined }))
   })
@@ -151,6 +154,15 @@ describe('game store farm beds', () => {
     expect(useGameStore.getState().beds).toHaveLength(2)
     expect(useGameStore.getState().bedInventory).toBe(0)
     expect(useGameStore.getState().tiles['bed-2-0']).toMatchObject({ plotId: 'bed-2', status: 'empty' })
+  })
+
+  it('lets the player prepare tiles on a newly placed bed', () => {
+    useGameStore.setState({ bedInventory: 1 })
+    expect(useGameStore.getState().placeFarmBed({ column: 5, row: 8 })).toMatchObject({ ok: true })
+
+    useGameStore.getState().selectTool('hoe')
+    expect(useGameStore.getState().interactWithTile('bed-2-0', 1_000)).toMatchObject({ ok: true, event: 'hoe' })
+    expect(useGameStore.getState().tiles['bed-2-0'].status).toBe('prepared')
   })
 
   it('does not partially mutate state when buying or placing a bed cannot succeed', () => {

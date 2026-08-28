@@ -9,11 +9,11 @@ import { WorldEffects, type TileEffect, type TileEffectKind } from './WorldEffec
 import '../styles/game.css'
 
 const TOOLS: readonly { id: ToolId; label: string }[] = [
-  { id: 'hand', label: 'Собрать' },
-  { id: 'hoe', label: 'Вскопать' },
-  { id: 'seeds', label: 'Посадить' },
-  { id: 'water', label: 'Полить' },
-  { id: 'build', label: 'Строительство' },
+  { id: 'hand', label: 'Рука' },
+  { id: 'hoe', label: 'Мотыга' },
+  { id: 'seeds', label: 'Семена' },
+  { id: 'water', label: 'Лейка' },
+  { id: 'build', label: 'Стройка' },
 ]
 
 const EFFECT_BY_EVENT: Partial<Record<Extract<ActionResult, { ok: true }>['event'], TileEffectKind>> = {
@@ -35,7 +35,7 @@ export function FarmBoard() {
   const [previewPosition, setPreviewPosition] = useState<BoardPosition | null>(null)
   const [movingBedId, setMovingBedId] = useState<string>()
   const [effects, setEffects] = useState<TileEffect[]>([])
-  const [notice, setNotice] = useState('Выберите инструмент и клетку грядки')
+  const [notice, setNotice] = useState('Инструмент → грядка')
   const [now, setNow] = useState(Date.now)
   const nextEffectId = useRef(1)
   const buildMode = game.selectedTool === 'build'
@@ -107,11 +107,24 @@ export function FarmBoard() {
 
   return (
     <main className="game-shell">
-      <header className="game-hud">
+      <header aria-label="Игровая панель" className="game-hud">
+        <div className="player-plaque">
+          <strong>{game.player.name}</strong>
+          <span>ур. {game.player.level}</span>
+        </div>
         <div aria-label="Ресурсы" className="game-resources">
-          <span>Монеты: {game.player.coins}</span>
-          <span>Дерево: {game.inventory.wood}</span>
-          <span>Энергия: {game.player.energy}/{game.player.maxEnergy}</span>
+          <span aria-label={`Монеты: ${game.player.coins}`}>
+            <i aria-hidden="true" className="resource-mark resource-mark--coin" />
+            {game.player.coins}
+          </span>
+          <span aria-label={`Дерево: ${game.inventory.wood}`}>
+            <i aria-hidden="true" className="resource-mark resource-mark--wood" />
+            {game.inventory.wood}
+          </span>
+          <span aria-label={`Энергия: ${game.player.energy} из ${game.player.maxEnergy}`}>
+            <i aria-hidden="true" className="resource-mark resource-mark--energy" />
+            {game.player.energy}/{game.player.maxEnergy}
+          </span>
         </div>
         <div aria-label="Инструменты" className="tool-row" role="toolbar">
           {TOOLS.map((tool) => (
@@ -127,15 +140,15 @@ export function FarmBoard() {
         </div>
         {buildMode && (
           <div className="build-toolbar">
-            <span>Грядки: {game.bedInventory}</span>
+            <span>Грядки ×{game.bedInventory}</span>
             <button
               onClick={() => reportResult(game.buyFarmBed())}
               type="button"
             >
-              Купить грядку · {FARM_BED_WOOD_COST} дерева
+              Купить · {FARM_BED_WOOD_COST} дерева
             </button>
             {movingBedId && (
-              <button onClick={() => setMovingBedId(undefined)} type="button">Отменить перенос</button>
+              <button onClick={() => setMovingBedId(undefined)} type="button">Отмена</button>
             )}
           </div>
         )}
@@ -145,14 +158,16 @@ export function FarmBoard() {
       <section aria-label="Ферма" className="farm-world">
         <img alt="" aria-hidden="true" className="farm-world__background" src={farmWorld} />
         <div className="farm-board-grid">
-          <BuildPlacementLayer
-            active={buildMode}
-            beds={game.beds}
-            ignoredBedId={movingBedId}
-            onPlace={handlePlacement}
-            onPreviewChange={setPreviewPosition}
-            previewPosition={previewPosition}
-          />
+          {buildMode && (
+            <BuildPlacementLayer
+              active
+              beds={game.beds}
+              ignoredBedId={movingBedId}
+              onPlace={handlePlacement}
+              onPreviewChange={setPreviewPosition}
+              previewPosition={previewPosition}
+            />
+          )}
 
           <div className="farm-bed-layer">
             {game.beds.map((bed) => (

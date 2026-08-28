@@ -140,7 +140,7 @@ export const useGameStore = create<GameStore>()(persist(
       const state = get()
       const tile = state.tiles[tileId]
       if (!tile) return fail('Грядка не найдена')
-      if (!state.unlockedPlots.includes(tile.plotId)) return fail('Участок ещё закрыт')
+      if (!state.beds.some((bed) => bed.id === tile.plotId)) return fail('Грядка не найдена')
 
       const timed = syncData(state, now)
       const currentTile = timed.tiles[tileId]
