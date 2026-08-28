@@ -31,6 +31,17 @@ export interface FarmTileState {
   harvestedAt?: number
 }
 
+export interface BoardPosition {
+  column: number
+  row: number
+}
+
+export interface FarmBedState {
+  id: string
+  position: BoardPosition
+  tileIds: readonly [string, string, string, string]
+}
+
 export interface PlayerState {
   coins: number
   level: number
