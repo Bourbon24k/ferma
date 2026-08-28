@@ -30,7 +30,9 @@ function isBlocked(position: BoardPosition): boolean {
 }
 
 export function isBedPositionValid(position: BoardPosition, beds: readonly FarmBedState[], ignoredBedId?: string): boolean {
-  if (position.column < 0 || position.row < 0
+  if (!Number.isFinite(position.column) || !Number.isInteger(position.column)
+    || !Number.isFinite(position.row) || !Number.isInteger(position.row)
+    || position.column < 0 || position.row < 0
     || position.column + BED_FOOTPRINT > BOARD_COLUMNS
     || position.row + BED_FOOTPRINT > BOARD_ROWS) {
     return false

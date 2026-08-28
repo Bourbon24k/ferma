@@ -22,6 +22,16 @@ describe('isBedPositionValid', () => {
     expect(isBedPositionValid({ column: 0, row: 0 }, beds)).toBe(false)
   })
 
+  it.each([
+    { column: Number.NaN, row: 8 },
+    { column: Number.POSITIVE_INFINITY, row: 8 },
+    { column: 5, row: Number.NEGATIVE_INFINITY },
+    { column: 5.5, row: 8 },
+    { column: 5, row: 8.5 },
+  ])('rejects invalid numeric coordinates: %o', (position) => {
+    expect(isBedPositionValid(position, beds)).toBe(false)
+  })
+
   it('ignores the bed being moved when checking a position', () => {
     expect(isBedPositionValid({ column: 2, row: 5 }, beds, 'bed-1')).toBe(true)
   })
