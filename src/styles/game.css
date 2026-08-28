@@ -1,0 +1,29 @@
+.sprite-sheet {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: calc(var(--frame-width) * var(--frames)) var(--frame-height);
+  image-rendering: pixelated;
+  transform: translateX(-50%);
+  animation-name: sprite-frames;
+  animation-duration: var(--duration);
+  animation-timing-function: steps(var(--frames));
+  animation-iteration-count: infinite;
+  animation-fill-mode: forwards;
+}
+
+@keyframes sprite-frames {
+  to {
+    background-position-x: calc(var(--frame-width) * var(--frames) * -1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite-sheet {
+    animation: none;
+    background-position-x: 0;
+  }
+}
