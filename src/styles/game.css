@@ -15,6 +15,349 @@
   animation-fill-mode: forwards;
 }
 
+:root {
+  color: #3d2a1f;
+  background: #172c24;
+  font-family: ui-rounded, "Trebuchet MS", system-ui, sans-serif;
+  font-synthesis: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: radial-gradient(circle at top, #3f7053, #172c24 72%);
+}
+
+button {
+  border: 2px solid #70472e;
+  border-radius: 8px;
+  color: #3d2a1f;
+  background: #f7ddb0;
+  box-shadow: 0 2px 0 #70472e;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+button:active {
+  transform: translateY(2px);
+  box-shadow: none;
+}
+
+button:focus-visible {
+  outline: 3px solid #fff5b5;
+  outline-offset: 2px;
+}
+
+button[aria-pressed="true"] {
+  color: #fffaf0;
+  background: #6f9b4c;
+}
+
+.game-shell {
+  width: min(100%, 520px);
+  min-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #294a37;
+  box-shadow: 0 0 36px rgb(0 0 0 / 35%);
+}
+
+.game-hud {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 4px solid #70472e;
+  background: #eac68e;
+  box-shadow: 0 5px 14px rgb(30 20 12 / 28%);
+}
+
+.game-resources,
+.tool-row,
+.build-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.game-resources span {
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgb(255 247 220 / 70%);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.tool-row button,
+.build-toolbar button {
+  min-height: 34px;
+  padding: 5px 9px;
+  font-size: 0.78rem;
+}
+
+.build-toolbar {
+  align-items: center;
+  padding-top: 2px;
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.game-notice {
+  min-height: 1.25em;
+  margin: 0;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.farm-world {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 853 / 1844;
+  overflow: hidden;
+  background: #6c9b50;
+}
+
+.farm-world__background {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+  user-select: none;
+  pointer-events: none;
+}
+
+.farm-board-grid,
+.farm-bed-layer,
+.build-placement-layer,
+.world-effects {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  grid-template-rows: repeat(14, minmax(0, 1fr));
+}
+
+.farm-board-grid {
+  top: 25%;
+  left: 4%;
+  width: 92%;
+  aspect-ratio: 10 / 14;
+}
+
+.farm-bed-layer,
+.build-placement-layer,
+.world-effects {
+  inset: 0;
+}
+
+.build-placement-layer {
+  z-index: 3;
+  pointer-events: none;
+}
+
+.build-placement-layer--active {
+  pointer-events: auto;
+}
+
+.board-cell {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  opacity: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.board-cell:focus-visible {
+  opacity: 1;
+  outline: 2px dashed #fff4a8;
+  outline-offset: -2px;
+}
+
+.bed-preview {
+  z-index: 2;
+  margin: 3px;
+  border: 3px dashed #fff4a8;
+  border-radius: 10px;
+  background: rgb(102 188 83 / 42%);
+  box-shadow: inset 0 0 0 2px rgb(25 69 34 / 40%);
+  pointer-events: none;
+}
+
+.bed-preview[data-valid="false"] {
+  border-color: #ffb3a1;
+  background: rgb(185 54 46 / 46%);
+}
+
+.farm-bed-layer {
+  z-index: 5;
+  pointer-events: none;
+}
+
+.farm-bed {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  margin: 2px;
+  filter: drop-shadow(0 3px 2px rgb(47 28 16 / 35%));
+  pointer-events: none;
+}
+
+.farm-bed--moving {
+  opacity: 0.62;
+  filter: drop-shadow(0 0 4px #fff4a8);
+}
+
+.farm-bed__soil {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #74472d;
+}
+
+.farm-bed__soil .sprite-sheet {
+  bottom: 50%;
+  transform: translate(-50%, 50%) scale(1.55);
+}
+
+.farm-bed__tiles {
+  position: absolute;
+  inset: 4px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: 2px;
+}
+
+.farm-tile {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  overflow: visible;
+  border: 1px solid rgb(72 38 22 / 35%);
+  border-radius: 7px;
+  background: rgb(116 71 45 / 34%);
+  box-shadow: inset 0 1px 3px rgb(26 14 8 / 25%);
+  pointer-events: auto;
+}
+
+.farm-tile--prepared,
+.farm-tile--seeded,
+.farm-tile--growing,
+.farm-tile--needsWater,
+.farm-tile--ready,
+.farm-tile--harvested {
+  background: rgb(77 43 27 / 52%);
+}
+
+.farm-tile:disabled {
+  pointer-events: none;
+}
+
+.plant-sprite {
+  position: absolute;
+  inset: 0;
+  display: block;
+  pointer-events: none;
+}
+
+.plant-sprite .sprite-sheet {
+  bottom: 50%;
+  transform: translate(-50%, 50%) scale(0.72);
+  transform-origin: center;
+}
+
+.farm-bed__controls {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  z-index: 8;
+  display: flex;
+  gap: 3px;
+  padding-top: 2px;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}
+
+.farm-bed__controls button {
+  min-height: 24px;
+  padding: 2px 5px;
+  white-space: nowrap;
+  font-size: 0.58rem;
+}
+
+.world-effects {
+  z-index: 8;
+  pointer-events: none;
+}
+
+.world-effect {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  pointer-events: none;
+}
+
+.world-effect .sprite-sheet {
+  bottom: 50%;
+  transform: translate(-50%, 50%) scale(0.8);
+}
+
+.world-effect--smoke {
+  position: absolute;
+  top: -34%;
+  left: 66%;
+}
+
+.world-effect--butterfly {
+  position: absolute;
+  top: 54%;
+  left: 80%;
+}
+
+.world-effect--sparkle {
+  position: absolute;
+  top: 12%;
+  left: 15%;
+}
+
+.world-effect--smoke .sprite-sheet {
+  transform: translateX(-50%) scale(0.7);
+}
+
+.world-effect--butterfly .sprite-sheet,
+.world-effect--sparkle .sprite-sheet {
+  transform: translateX(-50%) scale(0.58);
+}
+
+@media (max-width: 380px) {
+  .game-hud {
+    gap: 6px;
+    padding: 7px;
+  }
+
+  .tool-row button,
+  .build-toolbar button {
+    padding-inline: 6px;
+    font-size: 0.7rem;
+  }
+}
+
 @keyframes sprite-frames {
   to {
     background-position-x: calc(var(--frame-width) * var(--frames) * -1);
